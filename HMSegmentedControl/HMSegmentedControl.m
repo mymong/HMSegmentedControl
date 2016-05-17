@@ -231,7 +231,15 @@
         NSAssert(title == nil, @"Unexpected type of segment title: %@", [title class]);
         size = CGSizeZero;
     }
-    return CGRectIntegral((CGRect){CGPointZero, size}).size;
+    size = CGRectIntegral((CGRect){CGPointZero, size}).size;
+    if (self.sectionEdgeInsetsForTitles.count > index) {
+        NSValue *value = self.sectionEdgeInsetsForTitles[index];
+        if ([value isKindOfClass:NSValue.class]) {
+            UIEdgeInsets insets = value.UIEdgeInsetsValue;
+            size = CGSizeMake(size.width + insets.left + insets.right, size.height + insets.top + insets.bottom);
+        }
+    }
+    return size;
 }
 
 - (NSAttributedString *)attributedTitleAtIndex:(NSUInteger)index {
@@ -315,6 +323,14 @@
             
             // Fix rect position/size to avoid blurry labels
             rect = CGRectMake(ceilf(rect.origin.x), ceilf(rect.origin.y), ceilf(rect.size.width), ceilf(rect.size.height));
+            
+            if (self.sectionEdgeInsetsForTitles.count > idx) {
+                NSValue *value = self.sectionEdgeInsetsForTitles[idx];
+                if ([value isKindOfClass:NSValue.class]) {
+                    UIEdgeInsets insets = value.UIEdgeInsetsValue;
+                    rect = UIEdgeInsetsInsetRect(rect, insets);
+                }
+            }
             
             CATextLayer *titleLayer = [CATextLayer layer];
             titleLayer.frame = rect;
