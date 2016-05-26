@@ -60,9 +60,14 @@ typedef enum {
 /**
  Provide a block to be executed when selected index is changed.
  
- Alternativly, you could use `addTarget:action:forControlEvents:`
+ Alternativly, you could use `addTarget:action:forControlEvents:` with UIControlEventValueChanged.
  */
 @property (nonatomic, copy) IndexChangeBlock indexChangeBlock;
+
+/**
+ Provide a block to be executed when selected index is tapped again.
+ */
+@property (nonatomic, copy) IndexChangeBlock tappedAgainBlock;
 
 /**
  Used to apply custom text styling to titles when set.

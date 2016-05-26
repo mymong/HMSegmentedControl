@@ -731,6 +731,11 @@
             sectionsCount = [self.sectionTitles count];
         }
         
+        if (segment == self.selectedSegmentIndex && segment < sectionsCount) {
+            if (self.isTouchEnabled)
+                [self notifyForSegmentTappedAgainAtIndex:segment];
+        }
+        
         if (segment != self.selectedSegmentIndex && segment < sectionsCount) {
             // Check if we have to do anything with the touch event
             if (self.isTouchEnabled)
@@ -871,6 +876,11 @@
     
     if (self.indexChangeBlock)
         self.indexChangeBlock(index);
+}
+
+- (void)notifyForSegmentTappedAgainAtIndex:(NSInteger)index {
+    if (self.tappedAgainBlock)
+        self.tappedAgainBlock(index);
 }
 
 #pragma mark - Styling Support
